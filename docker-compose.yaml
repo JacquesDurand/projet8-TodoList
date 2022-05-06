@@ -15,10 +15,21 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    environment:
+      UID: ${UID}
+      GID: ${GID}
+      BLACKFIRE_CLIENT_ID: ${BLACKFIRE_CLIENT_ID}
+      BLACKFIRE_CLIENT_TOKEN: ${BLACKFIRE_CLIENT_TOKEN}
     depends_on:
       - db
     volumes:
       - ./:/var/www/todo
+  blackfire:
+    image: blackfire/blackfire:2
+    ports: ["8307"]
+    environment:
+      BLACKFIRE_SERVER_ID: ${BLACKFIRE_SERVER_ID}
+      BLACKFIRE_SERVER_TOKEN: ${BLACKFIRE_SERVER_TOKEN}
   db:
     image: postgres:14.2
     environment:
