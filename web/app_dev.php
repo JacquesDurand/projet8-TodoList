@@ -1,5 +1,6 @@
 <?php
 
+use Blackfire\Client;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Debug\Debug;
 
@@ -17,7 +18,13 @@ umask(0000);
 //    header('HTTP/1.0 403 Forbidden');
 //    exit('You are not allowed to access this file. Check '.basename(__FILE__).' for more information.');
 //}
-
+if (isset($_ENV['BLACKFIRE_CLIENT_ID']) && \class_exists(Client::class)) {
+    $blackfire = new Client();
+    $probe = $blackfire->createProbe();
+    register_shutdown_function(function () use ($blackfire, $probe) {
+        $blackfire->endProbe($probe);
+    });
+}
 /** @var \Composer\Autoload\ClassLoader $loader */
 $loader = require __DIR__.'/../app/autoload.php';
 Debug::enable();

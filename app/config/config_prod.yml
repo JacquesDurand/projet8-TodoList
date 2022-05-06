@@ -3,13 +3,13 @@ imports:
 
 doctrine:
     dbal:
-        driver: '%database_driver%'
+        driver: 'pdo_pgsql'
         host: '%database_host%'
         port: '%database_port%'
         dbname: '%database_name%'
         user: '%database_user%'
         password: '%database_password%'
-        server_version: '%database_version%'
+        server_version: '14.2'
 #    orm:
 #        metadata_cache_driver: apc
 #        result_cache_driver: apc
