@@ -18,9 +18,9 @@
     },
     "require": {
         "php": ">=5.5.9",
-        "symfony/symfony": "3.1.*",
-        "doctrine/orm": "^2.5",
-        "doctrine/doctrine-bundle": "^1.6",
+        "symfony/symfony": "^3.4.0",
+        "doctrine/orm": "^2.6.0",
+        "doctrine/doctrine-bundle": "^1.12",
         "doctrine/doctrine-cache-bundle": "^1.2",
         "symfony/swiftmailer-bundle": "^2.3",
         "symfony/monolog-bundle": "^2.8",
@@ -28,7 +28,11 @@
         "sensio/distribution-bundle": "^5.0",
         "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "^2.0",
-        "blackfire/php-sdk": "^1.29"
+        "blackfire/php-sdk": "^1.29",
+        "doctrine/dbal": "^2.6.0",
+        "laminas/laminas-zendframework-bridge": "^1.5",
+        "symfony/translation": "*",
+        "doctrine/doctrine-migrations-bundle": "*"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
