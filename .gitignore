@@ -16,3 +16,4 @@
 /web/bundles/
 .env
 .idea
+coverage

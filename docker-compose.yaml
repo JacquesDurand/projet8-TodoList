@@ -24,6 +24,7 @@ services:
       - db
     volumes:
       - ./:/var/www/todo
+      - ./coverage/:/opt/phpstorm-coverage
   blackfire:
     image: blackfire/blackfire:2
     ports: ["8307"]

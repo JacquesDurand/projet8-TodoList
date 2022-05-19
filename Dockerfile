@@ -7,6 +7,7 @@ FROM composer:${COMPOSER_VERSION} AS composer
 FROM php:${PHP_VERSION}-fpm-alpine
 
 ENV SYMFONY_ENV=dev
+ARG XDEBUG_VERSION=3.1.4
 
 RUN set -eux \
     && apk update --no-cache \
@@ -15,6 +16,9 @@ RUN set -eux \
         acl \
         autoconf \
         g++ \
+        git \
+        libpng-dev\
+        libzip-dev\
         make \
         postgresql-dev \
         shadow \
@@ -23,6 +27,10 @@ RUN set -eux \
     && docker-php-ext-install \
         pdo \
         pdo_pgsql \
+        zip \
+    && pecl install \
+    xdebug-"$XDEBUG_VERSION" \
+    && pecl clear-cache \
     && runDeps="$( \
         scanelf --needed --nobanner --format '%n#p' --recursive /usr/local/lib/php/extensions \
             | tr ',' '\n' \
@@ -55,5 +63,6 @@ RUN set -eux \
     && chown -R legging:users /var/www/todo
 
 USER legging
+
 
 CMD ["php-fpm"]
