@@ -39,6 +39,7 @@ class User implements UserInterface
      */
     private $email;
 
+
     public function getId()
     {
         return $this->id;
