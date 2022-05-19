@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Table("user")
+ * @ORM\Table("`user`", schema= "public")
  * @ORM\Entity
  * @UniqueEntity("email")
  */

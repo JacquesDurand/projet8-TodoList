@@ -1,4 +1,4 @@
-ARG PHP_VERSION=5.6
+ARG PHP_VERSION=7.4
 ARG COMPOSER_VERSION=2.2
 
 FROM composer:${COMPOSER_VERSION} AS composer
@@ -7,7 +7,6 @@ FROM composer:${COMPOSER_VERSION} AS composer
 FROM php:${PHP_VERSION}-fpm-alpine
 
 ENV SYMFONY_ENV=dev
-#ENV COMPOSER_ALLOW_SUPERUSER=1
 
 RUN set -eux \
     && apk update --no-cache \
@@ -48,31 +47,13 @@ COPY docker/php/php.ini $PHP_INI_DIR/php.ini
 COPY docker/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
 
+
 WORKDIR /var/www/todo
 
-#COPY composer.json composer.json
-#COPY composer.lock composer.lock
+RUN set -eux \
+    && useradd -u 1000 -r -g users legging \
+    && chown -R legging:users /var/www/todo
 
-#RUN set -eux \
-#    && composer install --no-dev --no-autoloader --no-interaction --no-scripts
+USER legging
 
-#COPY . /var/www/todo
-
-#RUN set -eux \
-#    && useradd -u 1000 -r -g users legging \
-#    && chown -R legging:users /var/www/todo \
-#    && setfacl -R -m u:www-data:rwX -m u:"$(whoami)":rwX var \
-#    && setfacl -dR -m u:www-data:rwX -m u:"$(whoami)":rwX var
-#
-#USER legging
-
-#RUN set -eux \
-#    && mkdir -p app/cache \
-#    && composer dump-autoload --classmap-authoritative --no-dev --no-scripts --optimize \
-#    && php ./vendor/sensio/distribution-bundle/Resources/bin/build_bootstrap.php \
-#    && php bin/console cache:clear --no-warmup -vvv \
-#    && php bin/console cache:warmup \
-#    && php bin/console assets:install
-
-#ENTRYPOINT ["docker-entrypoint"]
 CMD ["php-fpm"]
