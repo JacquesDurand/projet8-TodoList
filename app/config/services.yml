@@ -7,3 +7,13 @@ services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    ###########
+    # Fixtures #
+    ##########
+    AppBundle\DataFixtures\DataProvider\PasswordHasherProvider:
+        tags: [ { name: nelmio_alice.faker.provider } ]
