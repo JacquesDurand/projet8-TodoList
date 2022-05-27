@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1653645505">
-  <project timestamp="1653645505">
+<coverage generated="1653652595">
+  <project timestamp="1653652595">
     <package name="AppBundle">
       <file name="/var/www/todo/src/AppBundle/AppBundle.php">
         <class name="AppBundle" namespace="AppBundle">
