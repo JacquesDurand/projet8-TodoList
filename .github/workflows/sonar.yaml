@@ -6,13 +6,71 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
-  sonarcloud:
+  test:
     name: SonarCloud
     runs-on: ubuntu-latest
+    services:
+      db:
+        image: 'postgres:14.2'
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: root
+          POSTGRES_DB: symfony
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
+      - name: Setup PHP with Xdebug
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql
+          coverage: xdebug
+
+      - name: Composer downgrade
+        run: composer self-update 2.2.14
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies with composer
+        run: composer install --no-ansi --no-interaction --no-progress
+
+      - name: DB ?
+        run: php bin/console doctrine:migrations:migrate
+        #          php bin/console doctrine:schema:update --force || echo "No migrations found or schema update failed"
+        env:
+          DATABASE_URL: postgres://todo:todo@127.0.0.1:${{ job.services.db.ports[5432] }}/todo?charset=UTF-8
+
+      - name: Setup fixtures
+        run: php bin/console hautelook:fixtures:load --no-interaction
+        env:
+          DATABASE_URL: postgres://todo:todo@127.0.0.1:${{ job.services.db.ports[5432] }}/todo?charset=UTF-8
+
+      - name: Run tests with phpunit/phpunit
+        run: SYMFONY_DEPRECATIONS_HELPER=disabled php vendor/bin/phpunit --coverage-clover=coverage.xml
+        env:
+          DATABASE_URL: postgres://todo:todo@127.0.0.1:${{ job.services.db.ports[5432] }}/todo?charset=UTF-8
+
+      - name: Fix code coverage paths
+        run: sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' coverage.xml
+
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         env:
