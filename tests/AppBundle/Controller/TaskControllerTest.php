@@ -75,6 +75,7 @@ class TaskControllerTest extends AuthenticatedWebTestCase
 
         $responseCrawler = $authorizedClient->followRedirect();
 
+        /** @var ?Task $task */
         $task = $authorizedClient
             ->getContainer()
             ->get('doctrine.orm.default_entity_manager')
@@ -88,6 +89,7 @@ class TaskControllerTest extends AuthenticatedWebTestCase
         $this->assertContains('new Task content', $responseCrawler->filter('.caption p')->text());
         $this->assertNotNull($task);
         $this->assertNotNull($task->getCreatedAt());
+        $this->assertEquals('admin',$task->getUser()->getUsername());
 
     }
 
