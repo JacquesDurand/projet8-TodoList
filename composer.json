@@ -41,7 +41,8 @@
         "sensio/generator-bundle": "^3.0",
         "symfony/phpunit-bridge": "^3.0",
         "phpunit/phpunit": "^5.7",
-        "hautelook/alice-bundle": "*"
+        "hautelook/alice-bundle": "*",
+        "rector/rector": "^0.13.5"
     },
     "scripts": {
         "symfony-scripts": [
