@@ -40,6 +40,12 @@ class Task
      */
     private $isDone;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private ?User $userId = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -84,5 +90,15 @@ class Task
     public function toggle($flag)
     {
         $this->isDone = $flag;
+    }
+
+    public function getUser(): User
+    {
+        return $this->userId;
+    }
+
+    public function setUser(User $user): void
+    {
+        $this->userId = $user;
     }
 }

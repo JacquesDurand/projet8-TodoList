@@ -31,6 +31,9 @@ class TaskController extends Controller
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
+            $user = $this->container->get('security.token_storage')->getToken()->getUser();
+            $task->setUser($user);
+
             $em->persist($task);
             $em->flush();
 
