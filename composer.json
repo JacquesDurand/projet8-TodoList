@@ -35,7 +35,8 @@
         "laminas/laminas-zendframework-bridge": "^1.5",
         "symfony/translation": "*",
         "doctrine/doctrine-migrations-bundle": "*",
-        "symfony/process": "^3.4"
+        "symfony/process": "^3.4",
+        "symfony/flex": "^1.19"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
@@ -58,7 +59,10 @@
         ],
         "post-update-cmd": [
             "@symfony-scripts"
-        ]
+        ],
+        "auto-scripts": {
+            "security-checker security:check": "script"
+        }
     },
     "extra": {
         "symfony-app-dir": "app",
@@ -69,6 +73,11 @@
         "symfony-assets-install": "relative",
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "symfony/flex": true
         }
     }
 }
