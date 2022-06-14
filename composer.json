@@ -20,29 +20,33 @@
     "prefer-stable": true,
     "require": {
         "php": ">=7.4",
-        "symfony/symfony": "^3.4.0",
         "doctrine/orm": "^2.6.0",
-        "doctrine/doctrine-bundle": "^1.12",
+        "doctrine/doctrine-bundle": "^2.0",
         "doctrine/doctrine-cache-bundle": "^1.2",
-        "symfony/swiftmailer-bundle": "^2.3",
-        "symfony/monolog-bundle": "^2.8",
         "symfony/polyfill-apcu": "^1.0",
-        "sensio/distribution-bundle": "^5.0",
-        "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "^2.0",
         "blackfire/php-sdk": "^1.29",
         "doctrine/dbal": "^2.6.0",
         "laminas/laminas-zendframework-bridge": "^1.5",
-        "symfony/translation": "*",
+        "symfony/translation": "^4.4",
         "doctrine/doctrine-migrations-bundle": "*",
         "symfony/process": "^3.4",
-        "symfony/flex": "^1.19"
+        "symfony/flex": "^1.19",
+        "symfony/asset": "^4.4",
+        "symfony/dotenv": "^4.4",
+        "symfony/proxy-manager-bridge": "^4.1",
+        "symfony/dependency-injection": "^4.4",
+        "symfony/config": "^4.4",
+        "symfony/framework-bundle": "^4.4",
+        "sensio/framework-extra-bundle": "^6.2",
+        "symfony/security-bundle": "^4.4",
+        "symfony/validator": "^4.4",
+        "symfony/monolog-bundle": "^3.8",
+        "symfony/form": "^4.4"
     },
     "require-dev": {
-        "sensio/generator-bundle": "^3.0",
         "symfony/phpunit-bridge": "^3.0",
         "phpunit/phpunit": "^5.7",
-        "hautelook/alice-bundle": "*",
         "rector/rector": "^0.13.5"
     },
     "scripts": {
@@ -61,7 +65,8 @@
             "@symfony-scripts"
         ],
         "auto-scripts": {
-            "security-checker security:check": "script"
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
         }
     },
     "extra": {
@@ -79,5 +84,8 @@
         "allow-plugins": {
             "symfony/flex": true
         }
+    },
+    "conflict": {
+        "symfony/symfony": "*"
     }
 }

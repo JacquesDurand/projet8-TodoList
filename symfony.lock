@@ -39,31 +39,6 @@
             "migrations/.gitignore"
         ]
     },
-    "hautelook/alice-bundle": {
-        "version": "2.7",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "2.2",
-            "ref": "c84e4f2b9d7f436d7d52e8369230b393367607ec"
-        },
-        "files": [
-            "config/packages/hautelook_alice.yaml",
-            "fixtures/.gitignore"
-        ]
-    },
-    "nelmio/alice": {
-        "version": "3.4",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "3.3",
-            "ref": "42b52d2065dc3fde27912d502c18ca1926e35ae2"
-        },
-        "files": [
-            "config/packages/nelmio_alice.yaml"
-        ]
-    },
     "phpunit/phpunit": {
         "version": "5.7",
         "recipe": {
@@ -78,25 +53,29 @@
             "tests/bootstrap.php"
         ]
     },
-    "sensio/distribution-bundle": {
-        "version": "v5.0.25"
-    },
     "sensio/framework-extra-bundle": {
-        "version": "v3.0.29"
-    },
-    "sensio/generator-bundle": {
-        "version": "v3.1.7"
-    },
-    "sensiolabs/security-checker": {
-        "version": "6.0",
+        "version": "6.2",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
-            "version": "4.0",
-            "ref": "160c9b600564faa1224e8f387d49ef13ceb8b793"
+            "version": "5.2",
+            "ref": "fb7e19da7f013d0d422fa9bce16f5c510e27609b"
         },
         "files": [
-            "config/packages/security_checker.yaml"
+            "config/packages/sensio_framework_extra.yaml"
+        ]
+    },
+    "symfony/console": {
+        "version": "3.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "3.3",
+            "ref": "524e110a6284dae4172aa8cc32db6f819428f6ac"
+        },
+        "files": [
+            "bin/console",
+            "config/bootstrap.php"
         ]
     },
     "symfony/flex": {
@@ -111,8 +90,39 @@
             ".env"
         ]
     },
+    "symfony/framework-bundle": {
+        "version": "3.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "3.4",
+            "ref": "4e582450c27d790227d2596a2ffb514fd71d5db7"
+        },
+        "files": [
+            "config/bootstrap.php",
+            "config/packages/cache.yaml",
+            "config/packages/framework.yaml",
+            "config/packages/test/framework.yaml",
+            "config/services.yaml",
+            "public/index.php",
+            "src/Controller/.gitignore",
+            "src/Kernel.php"
+        ]
+    },
     "symfony/monolog-bundle": {
-        "version": "v2.12.1"
+        "version": "3.8",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "3.3",
+            "ref": "2120e71a370db3a494b8afcc42d7cfb2cff6f910"
+        },
+        "files": [
+            "config/packages/dev/monolog.yaml",
+            "config/packages/prod/deprecations.yaml",
+            "config/packages/prod/monolog.yaml",
+            "config/packages/test/monolog.yaml"
+        ]
     },
     "symfony/phpunit-bridge": {
         "version": "3.4",
@@ -129,27 +139,55 @@
             "tests/bootstrap.php"
         ]
     },
-    "symfony/swiftmailer-bundle": {
-        "version": "2.6",
+    "symfony/routing": {
+        "version": "4.1",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
-            "version": "2.5",
-            "ref": "f0b2fccdca2dfd97dc2fd5ad216d5e27c4f895ac"
+            "version": "4.0",
+            "ref": "22715e3fd48c861b6390ccb16f3aa6d1cd6a58e5"
         },
         "files": [
-            "config/packages/dev/swiftmailer.yaml",
-            "config/packages/swiftmailer.yaml",
-            "config/packages/test/swiftmailer.yaml"
+            "config/packages/prod/routing.yaml",
+            "config/routes.yaml"
         ]
     },
-    "theofidry/alice-data-fixtures": {
-        "version": "1.1",
+    "symfony/security-bundle": {
+        "version": "4.4",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
-            "version": "1.0",
-            "ref": "fe5a50faf580eb58f08ada2abe8afbd2d4941e05"
-        }
+            "version": "4.4",
+            "ref": "7b4408dc203049666fe23fabed23cbadc6d8440f"
+        },
+        "files": [
+            "config/packages/security.yaml"
+        ]
+    },
+    "symfony/translation": {
+        "version": "4.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "3.3",
+            "ref": "2ad9d2545bce8ca1a863e50e92141f0b9d87ffcd"
+        },
+        "files": [
+            "config/packages/translation.yaml",
+            "translations/.gitignore"
+        ]
+    },
+    "symfony/validator": {
+        "version": "4.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "4.3",
+            "ref": "3eb8df139ec05414489d55b97603c5f6ca0c44cb"
+        },
+        "files": [
+            "config/packages/test/validator.yaml",
+            "config/packages/validator.yaml"
+        ]
     }
 }
