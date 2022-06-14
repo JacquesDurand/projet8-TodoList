@@ -4,7 +4,7 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "": "src/"
+            "App\\": "src/"
         },
         "classmap": [
             "app/AppKernel.php",
@@ -64,7 +64,7 @@
         "symfony-app-dir": "app",
         "symfony-bin-dir": "bin",
         "symfony-var-dir": "var",
-        "symfony-web-dir": "web",
+        "symfony-web-dir": "public",
         "symfony-tests-dir": "tests",
         "symfony-assets-install": "relative",
         "incenteev-parameters": {

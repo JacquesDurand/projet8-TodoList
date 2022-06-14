@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\DataFixtures\DataProvider;
+namespace App\DataFixtures\DataProvider;
 
-use AppBundle\Entity\User;
+use App\Entity\User;
 use Faker\Generator;
 use Faker\Provider\Base;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;

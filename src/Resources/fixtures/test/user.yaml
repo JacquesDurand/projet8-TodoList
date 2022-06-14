@@ -1,4 +1,4 @@
-AppBundle\Entity\User:
+App\Entity\User:
     user_{1..9}:
         userName: <name()>
         password: <hashPassword(word())>
