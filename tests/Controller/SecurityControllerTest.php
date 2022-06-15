@@ -2,15 +2,9 @@
 
 namespace Tests\Controller;
 
-use App\Entity\User;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class SecurityControllerTest extends WebTestCase
 {
@@ -21,7 +15,6 @@ class SecurityControllerTest extends WebTestCase
 
     public function testIndex()
     {
-
         $this->client->request(Request::METHOD_GET, '/');
 
         $crawler = $this->client->followRedirect();
@@ -32,7 +25,6 @@ class SecurityControllerTest extends WebTestCase
 
     public function testLoginCheck()
     {
-
         $this->client->request(Request::METHOD_GET, '/login_check');
 
         $this->assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $this->client->getResponse()->getStatusCode());

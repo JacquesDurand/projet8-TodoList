@@ -7,19 +7,17 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\Role\Role;
 
 abstract class AuthenticatedWebTestCase extends WebTestCase
 {
     protected function createAuthenticatedClient(array $roles = null): KernelBrowser
     {
         // Assign default user roles if no roles have been passed.
-        if($roles == null) {
+        if (null == $roles) {
             $roles = ['ROLE_SUPER_ADMIN'];
         } else {
             $tmpRoles = [];
-            foreach($roles as $role)
-            {
+            foreach ($roles as $role) {
                 $tmpRoles[] = $role;
             }
             $roles = $tmpRoles;
@@ -54,5 +52,4 @@ abstract class AuthenticatedWebTestCase extends WebTestCase
 
         return $client;
     }
-
 }

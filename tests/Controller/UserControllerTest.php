@@ -12,7 +12,6 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserControllerTest extends AuthenticatedWebTestCase
 {
-
     public function setUp(): void
     {
         $this->client = static::createClient();
@@ -50,7 +49,6 @@ class UserControllerTest extends AuthenticatedWebTestCase
 
         $this->assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertStringContainsString('Liste des utilisateurs', $crawler->filter('h1')->html());
-
     }
 
     public function testGetCreateAction()
@@ -77,7 +75,6 @@ class UserControllerTest extends AuthenticatedWebTestCase
         $this->assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertNotNull($user);
         $this->assertTrue(in_array('ROLE_USER', $user->getRoles()));
-
     }
 
     public function testEditAction()
@@ -119,8 +116,7 @@ class UserControllerTest extends AuthenticatedWebTestCase
         $this->assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertNotNull($editedUser);
         $this->assertSame('editedTest@test.com', $editedUser->getEmail());
-        $this->assertTrue( $passwordDecoder->isPasswordValid($editedUser, 'editedP@ssword'));
-
+        $this->assertTrue($passwordDecoder->isPasswordValid($editedUser, 'editedP@ssword'));
     }
 
     private function createUser(Client $client)

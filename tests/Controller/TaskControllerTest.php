@@ -8,11 +8,9 @@ use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\Controller\AuthenticatedWebTestCase;
 
 class TaskControllerTest extends AuthenticatedWebTestCase
 {
-
     public function setUp(): void
     {
         $this->client = static::createClient();
@@ -35,7 +33,6 @@ class TaskControllerTest extends AuthenticatedWebTestCase
         $entityManager->flush();
     }
 
-
     public function testTaskListNotLoggedIn()
     {
         $this->client->request(Request::METHOD_GET, '/tasks');
@@ -54,7 +51,6 @@ class TaskControllerTest extends AuthenticatedWebTestCase
 
         $this->assertEquals(Response::HTTP_OK, $authorizedClient->getResponse()->getStatusCode());
         $this->assertStringContainsString('Créer une tâche', $crawler->filter('.btn.btn-info.pull-right')->text());
-
     }
 
     public function testGetTaskCreate()
@@ -89,8 +85,7 @@ class TaskControllerTest extends AuthenticatedWebTestCase
         $this->assertStringContainsString('new Task content', $responseCrawler->filter('.caption p')->text());
         $this->assertNotNull($task);
         $this->assertNotNull($task->getCreatedAt());
-        $this->assertEquals('admin',$task->getUser()->getUsername());
-
+        $this->assertEquals('admin', $task->getUser()->getUsername());
     }
 
     public function testEditTask()
@@ -164,7 +159,6 @@ class TaskControllerTest extends AuthenticatedWebTestCase
         $this->assertEquals(Response::HTTP_OK, $authorizedClient->getResponse()->getStatusCode());
         $this->assertStringContainsString('new Task content', $responseCrawler->filter('.caption p')->text());
         $this->assertTrue($toggledTask->isDone());
-
     }
 
     public function testDeleteTask()
@@ -198,16 +192,15 @@ class TaskControllerTest extends AuthenticatedWebTestCase
         ;
 
         $this->assertEquals(Response::HTTP_OK, $authorizedClient->getResponse()->getStatusCode());
-        $this->assertEmpty( $responseCrawler->filter('.caption p'));
+        $this->assertEmpty($responseCrawler->filter('.caption p'));
         $this->assertNull($deletedTask);
-        
     }
 
     private function createTask(Client $authorizedClient): void
     {
         $body = [
             'task[title]' => 'new Task',
-            'task[content]' => 'new Task content'
+            'task[content]' => 'new Task content',
         ];
 
         $crawler = $authorizedClient->request(Request::METHOD_GET, '/tasks/create');
@@ -217,17 +210,16 @@ class TaskControllerTest extends AuthenticatedWebTestCase
         $authorizedClient->submit($form, $body);
     }
 
-    private function editTask(Client $authorizedClient,?Crawler $crawler): void
+    private function editTask(Client $authorizedClient, ?Crawler $crawler): void
     {
         $body = [
             'task[title]' => 'edited Task',
-            'task[content]' => 'edited Task content'
+            'task[content]' => 'edited Task content',
         ];
 
         $button = $crawler->filter('.btn.btn-success.pull-right');
         $form = $button->form();
 
         $authorizedClient->submit($form, $body);
-
     }
 }
