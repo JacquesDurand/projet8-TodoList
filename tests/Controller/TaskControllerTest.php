@@ -1,24 +1,24 @@
 <?php
 
-namespace Tests\AppBundle\Controller;
+namespace Tests\Controller;
 
-use AppBundle\Entity\Task;
+use App\Entity\Task;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\AuthenticatedWebTestCase;
+use Tests\Controller\AuthenticatedWebTestCase;
 
 class TaskControllerTest extends AuthenticatedWebTestCase
 {
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->client = static::createClient();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         /** @var EntityManagerInterface $entityManager */
         $entityManager = static::createClient()
@@ -43,7 +43,7 @@ class TaskControllerTest extends AuthenticatedWebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertContains('Se connecter', $crawler->filter('form .btn')->html());
+        $this->assertStringContainsString('Se connecter', $crawler->filter('form .btn')->html());
     }
 
     public function testTaskListLoggedIn()
@@ -53,7 +53,7 @@ class TaskControllerTest extends AuthenticatedWebTestCase
         $crawler = $authorizedClient->request(Request::METHOD_GET, '/tasks');
 
         $this->assertEquals(Response::HTTP_OK, $authorizedClient->getResponse()->getStatusCode());
-        $this->assertContains('Créer une tâche', $crawler->filter('.btn.btn-info.pull-right')->text());
+        $this->assertStringContainsString('Créer une tâche', $crawler->filter('.btn.btn-info.pull-right')->text());
 
     }
 
@@ -64,7 +64,7 @@ class TaskControllerTest extends AuthenticatedWebTestCase
         $crawler = $authorizedClient->request(Request::METHOD_GET, '/tasks/create');
 
         $this->assertEquals(Response::HTTP_OK, $authorizedClient->getResponse()->getStatusCode());
-        $this->assertContains('Ajouter', $crawler->filter('.btn.btn-success.pull-right')->text());
+        $this->assertStringContainsString('Ajouter', $crawler->filter('.btn.btn-success.pull-right')->text());
     }
 
     public function testCreateTask()
@@ -86,7 +86,7 @@ class TaskControllerTest extends AuthenticatedWebTestCase
             ;
 
         $this->assertEquals(Response::HTTP_OK, $authorizedClient->getResponse()->getStatusCode());
-        $this->assertContains('new Task content', $responseCrawler->filter('.caption p')->text());
+        $this->assertStringContainsString('new Task content', $responseCrawler->filter('.caption p')->text());
         $this->assertNotNull($task);
         $this->assertNotNull($task->getCreatedAt());
         $this->assertEquals('admin',$task->getUser()->getUsername());
@@ -126,7 +126,7 @@ class TaskControllerTest extends AuthenticatedWebTestCase
         ;
 
         $this->assertEquals(Response::HTTP_OK, $authorizedClient->getResponse()->getStatusCode());
-        $this->assertContains('edited Task content', $responseCrawler->filter('.caption p')->text());
+        $this->assertStringContainsString('edited Task content', $responseCrawler->filter('.caption p')->text());
         $this->assertNotNull($editedTask);
     }
 
@@ -162,7 +162,7 @@ class TaskControllerTest extends AuthenticatedWebTestCase
         ;
 
         $this->assertEquals(Response::HTTP_OK, $authorizedClient->getResponse()->getStatusCode());
-        $this->assertContains('new Task content', $responseCrawler->filter('.caption p')->text());
+        $this->assertStringContainsString('new Task content', $responseCrawler->filter('.caption p')->text());
         $this->assertTrue($toggledTask->isDone());
 
     }

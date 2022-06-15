@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Controller;
+namespace Tests\Controller;
 
-use AppBundle\Entity\User;
+use App\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class SecurityControllerTest extends WebTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->client = static::createClient();
     }
@@ -27,7 +27,7 @@ class SecurityControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertContains('Se connecter', $crawler->filter('form .btn')->html());
+        $this->assertStringContainsString('Se connecter', $crawler->filter('form .btn')->html());
     }
 
     public function testLoginCheck()
@@ -46,6 +46,6 @@ class SecurityControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect(); // Then to '/login'
 
         $this->assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertContains('Se connecter', $crawler->filter('form .btn')->html());
+        $this->assertStringContainsString('Se connecter', $crawler->filter('form .btn')->html());
     }
 }

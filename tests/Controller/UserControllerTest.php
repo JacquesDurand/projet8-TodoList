@@ -1,11 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Controller;
+namespace Tests\Controller;
 
-use AppBundle\Controller\UserController;
-use AppBundle\Entity\User;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,12 +13,12 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class UserControllerTest extends AuthenticatedWebTestCase
 {
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->client = static::createClient();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         /** @var EntityManagerInterface $em */
         $em = $this->client
@@ -51,7 +49,7 @@ class UserControllerTest extends AuthenticatedWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/users');
 
         $this->assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertContains('Liste des utilisateurs', $crawler->filter('h1')->html());
+        $this->assertStringContainsString('Liste des utilisateurs', $crawler->filter('h1')->html());
 
     }
 
@@ -60,7 +58,7 @@ class UserControllerTest extends AuthenticatedWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/users/create');
 
         $this->assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertContains('Ajouter', $crawler->filter('.btn.btn-success.pull-right')->text());
+        $this->assertStringContainsString('Ajouter', $crawler->filter('.btn.btn-success.pull-right')->text());
     }
 
     public function testCreateAction()

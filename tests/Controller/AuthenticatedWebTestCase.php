@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Controller;
+namespace Tests\Controller;
 
-use AppBundle\Entity\User;
-use Symfony\Bundle\FrameworkBundle\Client;
+use App\Entity\User;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -11,18 +11,15 @@ use Symfony\Component\Security\Core\Role\Role;
 
 abstract class AuthenticatedWebTestCase extends WebTestCase
 {
-
-    protected function createAuthenticatedClient(array $roles = null): Client
+    protected function createAuthenticatedClient(array $roles = null): KernelBrowser
     {
         // Assign default user roles if no roles have been passed.
         if($roles == null) {
-            $role = new Role('ROLE_SUPER_ADMIN');
-            $roles = array($role);
+            $roles = ['ROLE_SUPER_ADMIN'];
         } else {
-            $tmpRoles = array();
+            $tmpRoles = [];
             foreach($roles as $role)
             {
-                $role = new Role($role, $role);
                 $tmpRoles[] = $role;
             }
             $roles = $tmpRoles;
@@ -40,7 +37,7 @@ abstract class AuthenticatedWebTestCase extends WebTestCase
         return self::createAuthentication($client, $user);
     }
 
-    private static function createAuthentication(Client $client, User $user): Client
+    private static function createAuthentication(KernelBrowser $client, User $user): KernelBrowser
     {
         // Read below regarding config_test.yml!
         $session = $client->getContainer()->get('session');
