@@ -5,45 +5,40 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/"
-        },
-        "classmap": [
-            "app/AppKernel.php",
-            "app/AppCache.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
         "php": ">=7.4",
-        "doctrine/orm": "^2.6.0",
-        "doctrine/doctrine-bundle": "^2.0",
-        "doctrine/doctrine-cache-bundle": "^1.2",
+        "doctrine/orm": "^2.10",
+        "doctrine/doctrine-bundle": "^2.7",
         "symfony/polyfill-apcu": "^1.0",
         "incenteev/composer-parameter-handler": "^2.0",
         "blackfire/php-sdk": "^1.29",
         "doctrine/dbal": "^2.6.0",
         "laminas/laminas-zendframework-bridge": "^1.5",
-        "symfony/translation": "^4.4",
+        "symfony/translation": "^5.4",
         "doctrine/doctrine-migrations-bundle": "*",
-        "symfony/process": "^3.4",
+        "symfony/process": "^5.4",
         "symfony/flex": "^1.19",
-        "symfony/asset": "^4.4",
-        "symfony/dotenv": "^4.4",
+        "symfony/asset": "^5.4",
+        "symfony/dotenv": "^5.4",
         "symfony/proxy-manager-bridge": "^4.1",
-        "symfony/dependency-injection": "^4.4",
-        "symfony/config": "^4.4",
-        "symfony/framework-bundle": "^4.4",
+        "symfony/dependency-injection": "^5.4",
+        "symfony/config": "^5.4",
+        "symfony/framework-bundle": "^5.4",
         "sensio/framework-extra-bundle": "^6.2",
-        "symfony/security-bundle": "^4.4",
-        "symfony/validator": "^4.4",
+        "symfony/security-bundle": "^5.4",
+        "symfony/validator": "^5.4",
         "symfony/monolog-bundle": "^3.8",
-        "symfony/form": "^4.4",
-        "symfony/twig-bundle": "^4.4",
+        "symfony/form": "^5.4",
+        "symfony/twig-bundle": "^5.4",
         "hautelook/alice-bundle": "^2.9",
         "friendsofphp/php-cs-fixer": "^2.19.3"
     },
@@ -51,9 +46,9 @@
         "symfony/phpunit-bridge": "^3.0",
         "rector/rector": "^0.13.5",
         "phpunit/phpunit": "^9.5",
-        "symfony/browser-kit": "^4.4",
-        "symfony/css-selector": "^4.4",
-        "symfony/dom-crawler": "^4.4"
+        "symfony/browser-kit": "^5.4",
+        "symfony/css-selector": "^5.4",
+        "symfony/dom-crawler": "^5.4"
     },
     "scripts": {
         "symfony-scripts": [

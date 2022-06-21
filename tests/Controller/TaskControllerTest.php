@@ -4,24 +4,17 @@ namespace Tests\Controller;
 
 use App\Entity\Task;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class TaskControllerTest extends AuthenticatedWebTestCase
 {
-    public function setUp(): void
-    {
-        $this->client = static::createClient();
-    }
-
     public function tearDown(): void
     {
         /** @var EntityManagerInterface $entityManager */
-        $entityManager = static::createClient()
-            ->getContainer()
-            ->get('doctrine.orm.default_entity_manager');
+        $entityManager = static::getContainer()->get('doctrine.orm.default_entity_manager');
 
         $tasks = $entityManager
             ->getRepository(Task::class)
@@ -31,21 +24,26 @@ class TaskControllerTest extends AuthenticatedWebTestCase
             $entityManager->remove($task);
         }
         $entityManager->flush();
+
+        parent::tearDown();
     }
 
     public function testTaskListNotLoggedIn()
     {
-        $this->client->request(Request::METHOD_GET, '/tasks');
+        $client = static::createClient();
+        $client->request(Request::METHOD_GET, '/tasks');
 
-        $crawler = $this->client->followRedirect();
+        $crawler = $client->followRedirect();
 
-        $this->assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertStringContainsString('Se connecter', $crawler->filter('form .btn')->html());
     }
 
     public function testTaskListLoggedIn()
     {
-        $authorizedClient = $this->createAuthenticatedClient(['ROLE_USER']);
+        $client = static::createClient();
+
+        $authorizedClient = $this->createAuthenticatedClient($client, ['ROLE_USER']);
 
         $crawler = $authorizedClient->request(Request::METHOD_GET, '/tasks');
 
@@ -55,7 +53,9 @@ class TaskControllerTest extends AuthenticatedWebTestCase
 
     public function testGetTaskCreate()
     {
-        $authorizedClient = $this->createAuthenticatedClient(['ROLE_USER']);
+        $client = static::createClient();
+
+        $authorizedClient = $this->createAuthenticatedClient($client, ['ROLE_USER']);
 
         $crawler = $authorizedClient->request(Request::METHOD_GET, '/tasks/create');
 
@@ -65,7 +65,9 @@ class TaskControllerTest extends AuthenticatedWebTestCase
 
     public function testCreateTask()
     {
-        $authorizedClient = $this->createAuthenticatedClient(['ROLE_USER']);
+        $client = static::createClient();
+
+        $authorizedClient = $this->createAuthenticatedClient($client, ['ROLE_USER']);
 
         $this->createTask($authorizedClient);
 
@@ -90,7 +92,9 @@ class TaskControllerTest extends AuthenticatedWebTestCase
 
     public function testEditTask()
     {
-        $authorizedClient = $this->createAuthenticatedClient(['ROLE_USER']);
+        $client = static::createClient();
+
+        $authorizedClient = $this->createAuthenticatedClient($client, ['ROLE_USER']);
         $this->createTask($authorizedClient);
 
         /** @var EntityManagerInterface $em */
@@ -127,7 +131,9 @@ class TaskControllerTest extends AuthenticatedWebTestCase
 
     public function testToggleTask()
     {
-        $authorizedClient = $this->createAuthenticatedClient(['ROLE_USER']);
+        $client = static::createClient();
+
+        $authorizedClient = $this->createAuthenticatedClient($client, ['ROLE_USER']);
         $this->createTask($authorizedClient);
 
         /** @var EntityManagerInterface $em */
@@ -163,7 +169,9 @@ class TaskControllerTest extends AuthenticatedWebTestCase
 
     public function testDeleteTask()
     {
-        $authorizedClient = $this->createAuthenticatedClient(['ROLE_USER']);
+        $client = static::createClient();
+
+        $authorizedClient = $this->createAuthenticatedClient($client, ['ROLE_USER']);
         $this->createTask($authorizedClient);
 
         /** @var EntityManagerInterface $em */
@@ -196,7 +204,7 @@ class TaskControllerTest extends AuthenticatedWebTestCase
         $this->assertNull($deletedTask);
     }
 
-    private function createTask(Client $authorizedClient): void
+    private function createTask(KernelBrowser $authorizedClient): void
     {
         $body = [
             'task[title]' => 'new Task',
@@ -210,7 +218,7 @@ class TaskControllerTest extends AuthenticatedWebTestCase
         $authorizedClient->submit($form, $body);
     }
 
-    private function editTask(Client $authorizedClient, ?Crawler $crawler): void
+    private function editTask(KernelBrowser $authorizedClient, ?Crawler $crawler): void
     {
         $body = [
             'task[title]' => 'edited Task',
