@@ -43,7 +43,7 @@ class TaskControllerTest extends AuthenticatedWebTestCase
     {
         $client = static::createClient();
 
-        $authorizedClient = $this->createAuthenticatedClient($client, ['ROLE_USER']);
+        $authorizedClient = $this->createAuthenticatedClient($client);
 
         $crawler = $authorizedClient->request(Request::METHOD_GET, '/tasks');
 
@@ -55,7 +55,7 @@ class TaskControllerTest extends AuthenticatedWebTestCase
     {
         $client = static::createClient();
 
-        $authorizedClient = $this->createAuthenticatedClient($client, ['ROLE_USER']);
+        $authorizedClient = $this->createAuthenticatedClient($client);
 
         $crawler = $authorizedClient->request(Request::METHOD_GET, '/tasks/create');
 
@@ -67,7 +67,7 @@ class TaskControllerTest extends AuthenticatedWebTestCase
     {
         $client = static::createClient();
 
-        $authorizedClient = $this->createAuthenticatedClient($client, ['ROLE_USER']);
+        $authorizedClient = $this->createAuthenticatedClient($client);
 
         $this->createTask($authorizedClient);
 
@@ -94,7 +94,7 @@ class TaskControllerTest extends AuthenticatedWebTestCase
     {
         $client = static::createClient();
 
-        $authorizedClient = $this->createAuthenticatedClient($client, ['ROLE_USER']);
+        $authorizedClient = $this->createAuthenticatedClient($client);
         $this->createTask($authorizedClient);
 
         /** @var EntityManagerInterface $em */
@@ -133,7 +133,7 @@ class TaskControllerTest extends AuthenticatedWebTestCase
     {
         $client = static::createClient();
 
-        $authorizedClient = $this->createAuthenticatedClient($client, ['ROLE_USER']);
+        $authorizedClient = $this->createAuthenticatedClient($client);
         $this->createTask($authorizedClient);
 
         /** @var EntityManagerInterface $em */
@@ -171,7 +171,7 @@ class TaskControllerTest extends AuthenticatedWebTestCase
     {
         $client = static::createClient();
 
-        $authorizedClient = $this->createAuthenticatedClient($client, ['ROLE_USER']);
+        $authorizedClient = $this->createAuthenticatedClient($client);
         $this->createTask($authorizedClient);
 
         /** @var EntityManagerInterface $em */
