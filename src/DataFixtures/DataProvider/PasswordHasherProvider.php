@@ -5,13 +5,13 @@ namespace App\DataFixtures\DataProvider;
 use App\Entity\User;
 use Faker\Generator;
 use Faker\Provider\Base;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class PasswordHasherProvider extends Base
 {
-    private UserPasswordEncoderInterface $passwordHasher;
+    private UserPasswordHasherInterface $passwordHasher;
 
-    public function __construct(Generator $generator, UserPasswordEncoderInterface $passwordHasher)
+    public function __construct(Generator $generator, UserPasswordHasherInterface $passwordHasher)
     {
         parent::__construct($generator);
         $this->passwordHasher = $passwordHasher;
@@ -19,6 +19,6 @@ class PasswordHasherProvider extends Base
 
     public function hashPassword(string $plainPassword): string
     {
-        return $this->passwordHasher->encodePassword((new User()), $plainPassword);
+        return $this->passwordHasher->hashPassword((new User()), $plainPassword);
     }
 }

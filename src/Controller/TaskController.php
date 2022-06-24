@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Task;
 use App\Form\TaskType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,15 +14,17 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class TaskController extends AbstractController
 {
     private TokenStorageInterface $tokenStorage;
+    private EntityManagerInterface $entityManager;
 
-    public function __construct(TokenStorageInterface $tokenStorage)
+    public function __construct(TokenStorageInterface $tokenStorage, EntityManagerInterface $entityManager)
     {
         $this->tokenStorage = $tokenStorage;
+        $this->entityManager = $entityManager;
     }
 
     public function listAction(): Response
     {
-        return $this->render('task/list.html.twig', ['tasks' => $this->getDoctrine()->getRepository('App:Task')->findAll()]);
+        return $this->render('task/list.html.twig', ['tasks' => $this->entityManager->getRepository('App:Task')->findAll()]);
     }
 
     public function createAction(Request $request): Response
@@ -32,13 +35,12 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
 
             $user = $this->tokenStorage->getToken()->getUser();
             $task->setUser($user);
 
-            $em->persist($task);
-            $em->flush();
+            $this->entityManager->persist($task);
+            $this->entityManager->flush();
 
             $this->addFlash('success', 'La tâche a été bien été ajoutée.');
 
@@ -55,7 +57,7 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->entityManager->flush();
 
             $this->addFlash('success', 'La tâche a bien été modifiée.');
 
@@ -71,7 +73,7 @@ class TaskController extends AbstractController
     public function toggleTaskAction(Task $task): Response
     {
         $task->toggle(!$task->isDone());
-        $this->getDoctrine()->getManager()->flush();
+        $this->entityManager->flush();
 
         $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
 
@@ -80,9 +82,8 @@ class TaskController extends AbstractController
 
     public function deleteTaskAction(Task $task): RedirectResponse
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($task);
-        $em->flush();
+        $this->entityManager->remove($task);
+        $this->entityManager->flush();
 
         $this->addFlash('success', 'La tâche a bien été supprimée.');
 

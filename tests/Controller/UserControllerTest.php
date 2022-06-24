@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserControllerTest extends AuthenticatedWebTestCase
@@ -109,9 +110,9 @@ class UserControllerTest extends AuthenticatedWebTestCase
                 ['username' => 'edited User']
             )
         ;
-        /** @var UserPasswordEncoderInterface $passwordDecoder */
+        /** @var UserPasswordHasherInterface $passwordDecoder */
         $passwordDecoder = static::getContainer()
-            ->get('security.password_encoder')
+            ->get('security.user_password_hasher')
             ;
 
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());

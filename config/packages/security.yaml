@@ -1,5 +1,8 @@
 security:
-    encoders:
+
+    enable_authenticator_manager: true
+
+    password_hashers:
         App\Entity\User: bcrypt
 
     providers:
@@ -12,7 +15,6 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            anonymous: ~
             pattern: ^/
             form_login:
                 login_path: login
@@ -22,6 +24,6 @@ security:
             logout: ~
 
     access_control:
-        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/users, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/users, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: ROLE_USER }

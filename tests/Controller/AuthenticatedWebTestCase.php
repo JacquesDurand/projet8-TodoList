@@ -29,7 +29,7 @@ abstract class AuthenticatedWebTestCase extends WebTestCase
 
         // Authenticate
         $firewall = 'main'; // This  MUST MATCH the name in your security.firewalls.->user_area<-
-        $token = new UsernamePasswordToken($user, null, $firewall, $roles);
+        $token = new UsernamePasswordToken($user, $firewall, $roles);
         $session->set('_security_'.$firewall, serialize($token));
         $session->save();
 
