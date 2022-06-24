@@ -35,7 +35,6 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $user = $this->tokenStorage->getToken()->getUser();
             $task->setUser($user);
 
@@ -82,6 +81,14 @@ class TaskController extends AbstractController
 
     public function deleteTaskAction(Task $task): RedirectResponse
     {
+        $user = $this->tokenStorage->getToken()->getUser();
+
+        if ($user !== $task->getUser()) {
+            $this->addFlash('error', 'La tâche ne peut être supprimée que par son créateur');
+
+            return $this->redirectToRoute('task_list');
+        }
+
         $this->entityManager->remove($task);
         $this->entityManager->flush();
 

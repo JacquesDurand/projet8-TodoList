@@ -74,8 +74,7 @@ class TaskControllerTest extends AuthenticatedWebTestCase
         $responseCrawler = $authorizedClient->followRedirect();
 
         /** @var ?Task $task */
-        $task = $authorizedClient
-            ->getContainer()
+        $task = static::getContainer()
             ->get('doctrine.orm.default_entity_manager')
             ->getRepository(Task::class)
             ->findOneBy(
@@ -98,8 +97,7 @@ class TaskControllerTest extends AuthenticatedWebTestCase
         $this->createTask($authorizedClient);
 
         /** @var EntityManagerInterface $em */
-        $em = $authorizedClient
-            ->getContainer()
+        $em = static::getContainer()
             ->get('doctrine.orm.default_entity_manager')
             ;
 
@@ -137,8 +135,7 @@ class TaskControllerTest extends AuthenticatedWebTestCase
         $this->createTask($authorizedClient);
 
         /** @var EntityManagerInterface $em */
-        $em = $authorizedClient
-            ->getContainer()
+        $em = static::getContainer()
             ->get('doctrine.orm.default_entity_manager')
         ;
 
@@ -175,8 +172,7 @@ class TaskControllerTest extends AuthenticatedWebTestCase
         $this->createTask($authorizedClient);
 
         /** @var EntityManagerInterface $em */
-        $em = $authorizedClient
-            ->getContainer()
+        $em = static::getContainer()
             ->get('doctrine.orm.default_entity_manager')
         ;
 
@@ -202,6 +198,45 @@ class TaskControllerTest extends AuthenticatedWebTestCase
         $this->assertEquals(Response::HTTP_OK, $authorizedClient->getResponse()->getStatusCode());
         $this->assertEmpty($responseCrawler->filter('.caption p'));
         $this->assertNull($deletedTask);
+    }
+
+    public function testAnotherUserCannotDeleteTask()
+    {
+        $client = static::createClient();
+
+        $authorizedClient = $this->createAuthenticatedClient($client);
+
+        $this->createTask($authorizedClient);
+
+        $newUserClient = $this->createAuthenticatedClientForAnotherUser($authorizedClient);
+
+        /** @var EntityManagerInterface $em */
+        $em = static::getContainer()
+            ->get('doctrine.orm.default_entity_manager')
+        ;
+
+        /** @var Task $task */
+        $task = $em
+            ->getRepository(Task::class)
+            ->findOneBy(
+                ['title' => 'new Task']
+            )
+        ;
+
+        $newUserClient->request(Request::METHOD_GET, '/tasks/'.$task->getId().'/delete');
+        $responseCrawler = $newUserClient->followRedirect();
+
+        $notDeletedTask = $em
+            ->getRepository(Task::class)
+            ->findOneBy(
+                ['title' => 'new Task']
+            )
+        ;
+
+        $this->assertEquals(Response::HTTP_OK, $authorizedClient->getResponse()->getStatusCode());
+        $this->assertNotEmpty($responseCrawler->filter('.caption p'));
+        $this->assertNotEmpty($responseCrawler->filter('.alert.alert-danger'));
+        $this->assertNotNull($notDeletedTask);
     }
 
     private function createTask(KernelBrowser $authorizedClient): void
