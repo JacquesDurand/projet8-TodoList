@@ -1,0 +1,47 @@
+index:
+    path: /
+    controller: App\Controller\DefaultController::indexAction
+
+login:
+    path: /login
+    controller: App\Controller\SecurityController::loginAction
+
+login_check:
+    path: /login_check
+    controller: App\Controller\SecurityController::loginCheck
+
+logout:
+    path: /logout
+    controller: App\Controller\SecurityController::logoutCheck
+
+user_list:
+    path: /users
+    controller: App\Controller\UserController::listAction
+
+user_create:
+    path: /users/create
+    controller: App\Controller\UserController::createAction
+
+user_edit:
+    path: /users/{id}/edit
+    controller: App\Controller\UserController::editAction
+
+task_list:
+    path: /tasks
+    controller: App\Controller\TaskController::listAction
+
+task_create:
+    path: /tasks/create
+    controller: App\Controller\TaskController::createAction
+
+task_edit:
+    path: /tasks/{id}/edit
+    controller: App\Controller\TaskController::editAction
+
+task_toggle:
+    path: /tasks/{id}/toggle
+    controller: App\Controller\TaskController::toggleTaskAction
+
+task_delete:
+    path: /tasks/{id}/delete
+    controller: App\Controller\TaskController::deleteTaskAction

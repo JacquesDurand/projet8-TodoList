@@ -52,21 +52,17 @@ jobs:
       - name: Install dependencies with composer
         run: composer install --no-ansi --no-interaction --no-progress
 
+      - name: Create .env
+        run: cp .env.dist .env
+
       - name: DB ?
-        run: php bin/console doctrine:migrations:migrate
-        #          php bin/console doctrine:schema:update --force || echo "No migrations found or schema update failed"
-        env:
-          DATABASE_URL: postgres://todo:todo@127.0.0.1:${{ job.services.db.ports[5432] }}/todo?charset=UTF-8
+        run: php bin/console doctrine:migrations:migrate --no-interaction
 
       - name: Setup fixtures
         run: php bin/console hautelook:fixtures:load --no-interaction
-        env:
-          DATABASE_URL: postgres://todo:todo@127.0.0.1:${{ job.services.db.ports[5432] }}/todo?charset=UTF-8
 
       - name: Run tests with phpunit/phpunit
         run: SYMFONY_DEPRECATIONS_HELPER=disabled php vendor/bin/phpunit --coverage-clover=coverage.xml
-        env:
-          DATABASE_URL: postgres://todo:todo@127.0.0.1:${{ job.services.db.ports[5432] }}/todo?charset=UTF-8
 
       - name: Fix code coverage paths
         run: sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' coverage.xml

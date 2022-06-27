@@ -5,7 +5,7 @@ parameters:
 
 services:
 #    service_name:
-#        class: AppBundle\Directory\ClassName
+#        class: App\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
     # default configuration for services in *this* file
     _defaults:
@@ -15,5 +15,5 @@ services:
     ###########
     # Fixtures #
     ##########
-    AppBundle\DataFixtures\DataProvider\PasswordHasherProvider:
+    App\DataFixtures\DataProvider\PasswordHasherProvider:
         tags: [ { name: nelmio_alice.faker.provider } ]

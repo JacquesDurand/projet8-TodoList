@@ -1,0 +1,9 @@
+App\Entity\User:
+    user_{1..9}:
+        userName: <name()>
+        password: <hashPassword(word())>
+        email: <email()>
+    user_test:
+        userName: 'admin'
+        password: <hashPassword('Azerty123*')>
+        email: 'admin@admin.com'
