@@ -3,7 +3,9 @@ App\Entity\User:
         userName: <name()>
         password: <hashPassword(word())>
         email: <email()>
+        roles: ['ROLE_USER']
     user_test:
         userName: 'admin'
         password: <hashPassword('Azerty123*')>
         email: 'admin@admin.com'
+        roles: ['ROLE_ADMIN']

@@ -77,6 +77,7 @@ class UserControllerTest extends AuthenticatedWebTestCase
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertNotNull($user);
         $this->assertTrue(in_array('ROLE_USER', $user->getRoles()));
+        $this->assertTrue(in_array('ROLE_ADMIN', $user->getRoles()));
     }
 
     public function testEditAction()
@@ -119,6 +120,7 @@ class UserControllerTest extends AuthenticatedWebTestCase
         $this->assertNotNull($editedUser);
         $this->assertSame('editedTest@test.com', $editedUser->getEmail());
         $this->assertTrue($passwordDecoder->isPasswordValid($editedUser, 'editedP@ssword'));
+        $this->assertFalse(in_array('ROLE_ADMIN', $editedUser->getRoles()));
     }
 
     private function createUser(KernelBrowser $client)
@@ -128,6 +130,7 @@ class UserControllerTest extends AuthenticatedWebTestCase
             'user[password][first]' => 'p@ssword',
             'user[password][second]' => 'p@ssword',
             'user[email]' => 'test@test.com',
+            'user[roles]' => ['ROLE_USER', 'ROLE_ADMIN']
         ];
 
         $crawler = $client->request(Request::METHOD_GET, '/users/create');
@@ -145,6 +148,8 @@ class UserControllerTest extends AuthenticatedWebTestCase
             'user[password][first]' => 'editedP@ssword',
             'user[password][second]' => 'editedP@ssword',
             'user[email]' => 'editedTest@test.com',
+            'user[roles][0]' => 'ROLE_USER',
+            'user[roles][1]' => false
         ];
 
         $button = $crawler->filter('.btn.btn-success.pull-right');

@@ -40,6 +40,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private ?string $email = null;
 
+    /**
+     * @ORM\Column(type="json")
+     */
+    private array $roles = [];
+
     public function getId()
     {
         return $this->id;
@@ -80,9 +85,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->email = $email;
     }
 
+    public function setRoles(array $roles): void
+    {
+        $this->roles = $roles;
+    }
+
     public function getRoles(): array
     {
-        return ['ROLE_USER'];
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
     public function eraseCredentials()
