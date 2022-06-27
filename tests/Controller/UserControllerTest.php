@@ -9,7 +9,6 @@ use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserControllerTest extends AuthenticatedWebTestCase
 {
@@ -40,33 +39,48 @@ class UserControllerTest extends AuthenticatedWebTestCase
         parent::tearDown();
     }
 
-    public function testListAction()
+    public function testListActionNotAdmin()
     {
         $client = static::createClient();
 
-        $crawler = $client->request(Request::METHOD_GET, '/users');
+        $client->request(Request::METHOD_GET, '/users');
+
+        $crawler = $client->followRedirect();
 
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->assertStringContainsString('Se connecter', $crawler->filter('form .btn')->html());
+    }
+
+    public function testListActionLoggedIn()
+    {
+        $client = static::createClient();
+        $authorizedClient = $this->createAuthenticatedClient($client);
+
+        $crawler = $authorizedClient->request(Request::METHOD_GET, '/users');
+
+        $this->assertEquals(Response::HTTP_OK, $authorizedClient->getResponse()->getStatusCode());
         $this->assertStringContainsString('Liste des utilisateurs', $crawler->filter('h1')->html());
     }
 
-    public function testGetCreateAction()
+    public function testGetCreateActionLoggedIn()
     {
         $client = static::createClient();
+        $authorizedClient = $this->createAuthenticatedClient($client);
 
-        $crawler = $client->request(Request::METHOD_GET, '/users/create');
+        $crawler = $authorizedClient->request(Request::METHOD_GET, '/users/create');
 
-        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->assertEquals(Response::HTTP_OK, $authorizedClient->getResponse()->getStatusCode());
         $this->assertStringContainsString('Ajouter', $crawler->filter('.btn.btn-success.pull-right')->text());
     }
 
     public function testCreateAction()
     {
         $client = static::createClient();
+        $authorizedClient = $this->createAuthenticatedClient($client);
 
-        $this->createUser($client);
+        $this->createUser($authorizedClient);
 
-        $responseCrawler = $client->followRedirect();
+        $responseCrawler = $authorizedClient->followRedirect();
 
         $user = static::getContainer()
             ->get('doctrine.orm.default_entity_manager')
@@ -74,7 +88,7 @@ class UserControllerTest extends AuthenticatedWebTestCase
             ->findOneBy(['username' => 'new User'])
             ;
 
-        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->assertEquals(Response::HTTP_OK, $authorizedClient->getResponse()->getStatusCode());
         $this->assertNotNull($user);
         $this->assertTrue(in_array('ROLE_USER', $user->getRoles()));
         $this->assertTrue(in_array('ROLE_ADMIN', $user->getRoles()));
@@ -83,8 +97,9 @@ class UserControllerTest extends AuthenticatedWebTestCase
     public function testEditAction()
     {
         $client = static::createClient();
+        $authorizedClient = $this->createAuthenticatedClient($client);
 
-        $this->createUser($client);
+        $this->createUser($authorizedClient);
 
         /** @var EntityManagerInterface $em */
         $em = static::getContainer()
@@ -98,7 +113,7 @@ class UserControllerTest extends AuthenticatedWebTestCase
             )
         ;
 
-        $crawler = $client->request(Request::METHOD_GET, '/users/'.$user->getId().'/edit');
+        $crawler = $authorizedClient->request(Request::METHOD_GET, '/users/'.$user->getId().'/edit');
 
         $this->editUser($client, $crawler);
 
@@ -116,7 +131,7 @@ class UserControllerTest extends AuthenticatedWebTestCase
             ->get('security.user_password_hasher')
             ;
 
-        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->assertEquals(Response::HTTP_OK, $authorizedClient->getResponse()->getStatusCode());
         $this->assertNotNull($editedUser);
         $this->assertSame('editedTest@test.com', $editedUser->getEmail());
         $this->assertTrue($passwordDecoder->isPasswordValid($editedUser, 'editedP@ssword'));
@@ -130,7 +145,7 @@ class UserControllerTest extends AuthenticatedWebTestCase
             'user[password][first]' => 'p@ssword',
             'user[password][second]' => 'p@ssword',
             'user[email]' => 'test@test.com',
-            'user[roles]' => ['ROLE_USER', 'ROLE_ADMIN']
+            'user[roles]' => ['ROLE_USER', 'ROLE_ADMIN'],
         ];
 
         $crawler = $client->request(Request::METHOD_GET, '/users/create');
@@ -149,7 +164,7 @@ class UserControllerTest extends AuthenticatedWebTestCase
             'user[password][second]' => 'editedP@ssword',
             'user[email]' => 'editedTest@test.com',
             'user[roles][0]' => 'ROLE_USER',
-            'user[roles][1]' => false
+            'user[roles][1]' => false,
         ];
 
         $button = $crawler->filter('.btn.btn-success.pull-right');

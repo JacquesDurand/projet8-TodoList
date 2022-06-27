@@ -10,6 +10,20 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 abstract class AuthenticatedWebTestCase extends WebTestCase
 {
+    protected function createAuthenticatedClientForAnotherUser(KernelBrowser $client): KernelBrowser
+    {
+        /** @var User $user */
+        $user = static::getContainer()
+            ->get('doctrine.orm.default_entity_manager')
+            ->getRepository(User::class)
+            ->findOneBy(['username' => 'admin2'])
+        ;
+
+        $roles = $user->getRoles();
+
+        return self::createAuthentication($client, $user, $roles);
+    }
+
     protected function createAuthenticatedClient(KernelBrowser $client): KernelBrowser
     {
         /** @var User $user */

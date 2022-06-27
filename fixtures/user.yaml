@@ -9,3 +9,8 @@ App\Entity\User:
         password: <hashPassword('Azerty123*')>
         email: 'admin@admin.com'
         roles: ['ROLE_ADMIN']
+    user_test_2:
+        userName: 'admin2'
+        password: <hashPassword('Azerty123*')>
+        email: 'admin2@admin.com'
+        roles: ['ROLE_ADMIN']

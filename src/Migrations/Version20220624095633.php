@@ -20,7 +20,6 @@ final class Version20220624095633 extends AbstractMigration
     public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE public.user ADD roles JSON NOT NULL ');
-
     }
 
     public function down(Schema $schema): void
