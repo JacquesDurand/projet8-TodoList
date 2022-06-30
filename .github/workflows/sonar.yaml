@@ -55,7 +55,7 @@ jobs:
       - name: Create .env
         run: cp .env.dist .env
 
-      - name: DB ?
+      - name: DB
         run: php bin/console doctrine:migrations:migrate --no-interaction
 
       - name: Setup fixtures
@@ -63,6 +63,11 @@ jobs:
 
       - name: Run tests with phpunit/phpunit
         run: SYMFONY_DEPRECATIONS_HELPER=disabled php vendor/bin/phpunit --coverage-clover=coverage.xml
+
+      - name: Infection
+        env:
+          INFECTION_BADGE_API_KEY: ${{ secrets.INFECTION_BADGE_API_KEY }}
+        run: SYMFONY_DEPRECATIONS_HELPER=disabled php vendor/bin/infection --threads=4
 
       - name: Fix code coverage paths
         run: sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' coverage.xml
