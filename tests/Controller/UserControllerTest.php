@@ -71,6 +71,7 @@ class UserControllerTest extends AuthenticatedWebTestCase
 
         $this->assertEquals(Response::HTTP_OK, $authorizedClient->getResponse()->getStatusCode());
         $this->assertStringContainsString('Ajouter', $crawler->filter('.btn.btn-success.pull-right')->text());
+        $this->assertStringContainsString('Nom d\'utilisateur', $crawler->filter('#user>div>label')->text());
     }
 
     public function testCreateAction()
