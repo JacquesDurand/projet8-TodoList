@@ -2,6 +2,7 @@
 
 namespace Tests\Controller;
 
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,5 +40,19 @@ class SecurityControllerTest extends WebTestCase
 
         $this->assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertStringContainsString('Se connecter', $crawler->filter('form .btn')->html());
+    }
+
+    public function testAccessDeniedRedirect()
+    {
+        $user = static::getContainer()
+            ->get('doctrine.orm.default_entity_manager')
+            ->getRepository(User::class)
+            ->findOneBy(['username' => 'random']);
+
+        $this->client->loginUser($user);
+
+        $this->client->request(Request::METHOD_GET, '/users');
+
+        $this->assertEquals(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
     }
 }
