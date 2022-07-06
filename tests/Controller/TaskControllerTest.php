@@ -270,10 +270,6 @@ class TaskControllerTest extends WebTestCase
         $client->submit($form, $body);
     }
 
-    /**
-     * @param KernelBrowser $client
-     * @return void
-     */
     public function loginFirstUser(KernelBrowser $client): void
     {
         $user = static::getContainer()
@@ -284,10 +280,6 @@ class TaskControllerTest extends WebTestCase
         $client->loginUser($user);
     }
 
-    /**
-     * @param KernelBrowser $client
-     * @return void
-     */
     public function loginSecondUser(KernelBrowser $client): void
     {
         $secondUser = static::getContainer()

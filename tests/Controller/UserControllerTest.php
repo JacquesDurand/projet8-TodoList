@@ -174,10 +174,6 @@ class UserControllerTest extends WebTestCase
         $client->submit($form, $body);
     }
 
-    /**
-     * @param KernelBrowser $client
-     * @return void
-     */
     public function loginFirstUser(KernelBrowser $client): void
     {
         $user = static::getContainer()
