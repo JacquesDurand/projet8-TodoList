@@ -15,6 +15,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    public const ANONYMOUS_USERNAME = 'Anonymous';
+    public const ANONYMOUS_PASSWORD = '@nonymou$';
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
