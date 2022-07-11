@@ -11,13 +11,14 @@ security:
     providers:
         doctrine:
             entity:
-                class: App:User
+                class: App\Entity\User
                 property: username
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
+            access_denied_handler: App\Security\AccessDeniedHandler
             pattern: ^/
             form_login:
                 login_path: login

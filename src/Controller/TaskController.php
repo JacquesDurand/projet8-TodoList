@@ -24,7 +24,7 @@ class TaskController extends AbstractController
 
     public function listAction(): Response
     {
-        return $this->render('task/list.html.twig', ['tasks' => $this->entityManager->getRepository('App:Task')->findAll()]);
+        return $this->render('task/list.html.twig', ['tasks' => $this->entityManager->getRepository(Task::class)->findAll()]);
     }
 
     public function createAction(Request $request): Response
