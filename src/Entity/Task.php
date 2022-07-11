@@ -8,6 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table
+ * @ORM\EntityListeners({"App\EntityListener\TaskEntityListener"})
  */
 class Task
 {
@@ -92,7 +93,7 @@ class Task
         $this->isDone = $flag;
     }
 
-    public function getUser(): User
+    public function getUser(): ?User
     {
         return $this->userId;
     }
