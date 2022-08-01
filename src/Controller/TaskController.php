@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Task;
+use App\Entity\User;
 use App\Form\TaskType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -83,7 +84,11 @@ class TaskController extends AbstractController
     {
         $user = $this->tokenStorage->getToken()->getUser();
 
-        if ($user !== $task->getUser()) {
+        if ($user !== $task->getUser()
+            && (!$this->isGranted('ROLE_ADMIN')
+                || User::ANONYMOUS_USERNAME !== $task->getUser()->getUsername()
+                )
+        ) {
             $this->addFlash('error', 'La tâche ne peut être supprimée que par son créateur');
 
             return $this->redirectToRoute('task_list');

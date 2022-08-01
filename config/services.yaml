@@ -24,3 +24,10 @@ services:
     ##########
     App\DataFixtures\DataProvider\PasswordHasherProvider:
         tags: [ { name: nelmio_alice.faker.provider } ]
+
+
+    App\EntityListener\TaskEntityListener:
+        arguments:
+            $entityManager: '@doctrine.orm.default_entity_manager'
+            $passwordHasher: '@security.user_password_hasher'
+        tags: [ { name: doctrine.orm.entity_listener, event: prePersist, class: App\Entity\Task } ]

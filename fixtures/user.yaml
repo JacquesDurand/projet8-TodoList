@@ -19,3 +19,8 @@ App\Entity\User:
         password: <hashPassword('Azerty123*')>
         email: 'random@random.com'
         roles: [ 'ROLE_USER' ]
+    user_anon:
+        username: 'Anonymous'
+        password: <hashPassword('@nonymou$')>
+        email: 'anon@anon.com'
+        roles: [ 'ROLE_USER' ]
