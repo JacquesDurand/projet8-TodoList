@@ -102,16 +102,15 @@
         ]
     },
     "symfony/console": {
-        "version": "3.4",
+        "version": "5.4",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
-            "version": "3.3",
-            "ref": "524e110a6284dae4172aa8cc32db6f819428f6ac"
+            "version": "5.3",
+            "ref": "da0c8be8157600ad34f10ff0c9cc91232522e047"
         },
         "files": [
-            "bin/console",
-            "config/bootstrap.php"
+            "bin/console"
         ]
     },
     "symfony/flex": {
@@ -170,12 +169,12 @@
         ]
     },
     "symfony/phpunit-bridge": {
-        "version": "3.4",
+        "version": "6.1",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
-            "version": "3.3",
-            "ref": "f59588dbcb508b1f45097a97d5066905aa6f8f41"
+            "version": "5.3",
+            "ref": "97cb3dc7b0f39c7cfc4b7553504c9d7b7795de96"
         },
         "files": [
             ".env.test",
