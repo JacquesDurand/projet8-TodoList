@@ -1,10 +1,9 @@
 name: Sonar
 on:
-  push:
-    branches:
-      - main
   pull_request:
     types: [opened, synchronize, reopened]
+    branches:
+      - main
 jobs:
   test:
     name: SonarCloud
@@ -54,6 +53,9 @@ jobs:
 
       - name: Create .env
         run: cp .env.dist .env
+
+      - name: Code Style
+        run: php vendor/bin/php-cs-fixer fix --dry-run
 
       - name: DB
         run: php bin/console doctrine:migrations:migrate --no-interaction
