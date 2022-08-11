@@ -1,5 +1,0 @@
-App\Entity\Task:
-    task_{1..9}:
-        title: <word()>
-        content: <text()>
-        user: '@user_anon'
