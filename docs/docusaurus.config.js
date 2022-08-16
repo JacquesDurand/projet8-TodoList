@@ -58,11 +58,18 @@ const config = {
             docId: 'tuto/intro',
             position: 'left',
             label: 'Documentation - Tutorials',
-          },{
+          },
+          {
             type: 'doc',
             docId: 'app/intro',
             position: 'left',
             label: 'Documentation - App',
+          },
+          {
+            type: 'doc',
+            docId: 'uml/intro',
+            position: 'left',
+            label: 'Documentation - UML',
           },
           {
             href: 'https://github.com/JacquesDurand/projet8-TodoList/',
