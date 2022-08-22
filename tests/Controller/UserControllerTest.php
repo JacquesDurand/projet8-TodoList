@@ -40,7 +40,7 @@ class UserControllerTest extends WebTestCase
         parent::tearDown();
     }
 
-    public function testListActionNotAdmin()
+    public function testListActionNotAdmin(): void
     {
         $client = static::createClient();
 
@@ -52,7 +52,7 @@ class UserControllerTest extends WebTestCase
         $this->assertStringContainsString('Se connecter', $crawler->filter('form .btn')->html());
     }
 
-    public function testListActionLoggedIn()
+    public function testListActionLoggedIn(): void
     {
         $client = static::createClient();
         $this->loginFirstUser($client);
@@ -62,7 +62,7 @@ class UserControllerTest extends WebTestCase
         $this->assertStringContainsString('Liste des utilisateurs', $crawler->filter('h1')->html());
     }
 
-    public function testGetCreateActionLoggedIn()
+    public function testGetCreateActionLoggedIn(): void
     {
         $client = static::createClient();
         $this->loginFirstUser($client);
@@ -74,7 +74,7 @@ class UserControllerTest extends WebTestCase
         $this->assertStringContainsString('Nom d\'utilisateur', $crawler->filter('#user>div>label')->text());
     }
 
-    public function testCreateAction()
+    public function testCreateAction(): void
     {
         $client = static::createClient();
         $this->loginFirstUser($client);
@@ -83,8 +83,10 @@ class UserControllerTest extends WebTestCase
 
         $client->followRedirect();
 
-        $user = static::getContainer()
-            ->get('doctrine.orm.default_entity_manager')
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = static::getContainer()->get('doctrine.orm.default_entity_manager');
+
+        $user = $entityManager
             ->getRepository(User::class)
             ->findOneBy(['username' => 'new User'])
             ;
@@ -95,7 +97,7 @@ class UserControllerTest extends WebTestCase
         $this->assertTrue(in_array('ROLE_ADMIN', $user->getRoles()));
     }
 
-    public function testEditAction()
+    public function testEditAction(): void
     {
         $client = static::createClient();
         $this->loginFirstUser($client);
@@ -139,7 +141,7 @@ class UserControllerTest extends WebTestCase
         $this->assertFalse(in_array('ROLE_ADMIN', $editedUser->getRoles()));
     }
 
-    private function createUser(KernelBrowser $client)
+    private function createUser(KernelBrowser $client): void
     {
         $body = [
             'user[username]' => 'new User',
@@ -176,8 +178,10 @@ class UserControllerTest extends WebTestCase
 
     public function loginFirstUser(KernelBrowser $client): void
     {
-        $user = static::getContainer()
-            ->get('doctrine.orm.default_entity_manager')
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = static::getContainer()->get('doctrine.orm.default_entity_manager');
+
+        $user = $entityManager
             ->getRepository(User::class)
             ->findOneBy(['username' => 'admin']);
 

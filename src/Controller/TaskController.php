@@ -36,8 +36,10 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $this->tokenStorage->getToken()->getUser();
-            $task->setUser($user);
+            $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
+            if ($user instanceof User) {
+                $task->setUser($user);
+            }
 
             $this->entityManager->persist($task);
             $this->entityManager->flush();
@@ -82,9 +84,10 @@ class TaskController extends AbstractController
 
     public function deleteTaskAction(Task $task): RedirectResponse
     {
-        $user = $this->tokenStorage->getToken()->getUser();
+        $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
 
-        if ($user !== $task->getUser()
+        if (null !== $task->getUser()
+            && $user !== $task->getUser()
             && (!$this->isGranted('ROLE_ADMIN')
                 || User::ANONYMOUS_USERNAME !== $task->getUser()->getUsername()
                 )

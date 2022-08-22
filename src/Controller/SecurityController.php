@@ -27,12 +27,12 @@ class SecurityController extends AbstractController
         ]);
     }
 
-    public function loginCheck()
+    public function loginCheck(): void
     {
         // This code is never executed.
     }
 
-    public function logoutCheck()
+    public function logoutCheck(): void
     {
         // This code is never executed.
     }

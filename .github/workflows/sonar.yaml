@@ -57,6 +57,9 @@ jobs:
       - name: Code Style
         run: php vendor/bin/php-cs-fixer fix --dry-run
 
+      - name: PhpStan
+        run: php vendor/bin/phpstan analyse -l 9 src/
+
       - name: DB
         run: php bin/console doctrine:migrations:migrate --no-interaction
 

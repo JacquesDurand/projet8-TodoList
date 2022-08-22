@@ -17,7 +17,7 @@ class Task
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="datetime")
@@ -53,7 +53,7 @@ class Task
         $this->isDone = false;
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -98,7 +98,7 @@ class Task
         return $this->userId;
     }
 
-    public function setUser(User $user): void
+    public function setUser(?User $user): void
     {
         $this->userId = $user;
     }

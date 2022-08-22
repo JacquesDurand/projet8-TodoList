@@ -78,6 +78,11 @@ db-reset: ## Reset database
 php-cs-fixer: ## Fix PHP code style
 	@$(PHP_CONT) vendor/bin/php-cs-fixer fix
 
+## —— PHPStan 🎵 ———————————————————————————————————————————————————————————————
+.PHONY: phpstan
+phpstan: ## Static code analysis
+	@$(PHP_CONT) vendor/bin/phpstan analyse -l 9 src/
+
 ## —— PHPUnit 🎵 ———————————————————————————————————————————————————————————————
 .PHONY: phpunit
 phpunit: ## Run tests
@@ -86,7 +91,7 @@ phpunit: ## Run tests
 ## —— PHPUnit 🎵 ———————————————————————————————————————————————————————————————
 .PHONY: phpunit-coverage
 phpunit-coverage: ## Run tests with coverage
-	docker-compose exec -T php bin/phpunit --coverage-clover cover.xml
+		@$(PHP_CONT) bin/phpunit --coverage-html coverage
 
 ## -- TcpChecks --------------------------------------------------------------
 .PHONY:assert-port-number

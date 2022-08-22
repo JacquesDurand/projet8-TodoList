@@ -3,18 +3,22 @@
 namespace Tests\Controller;
 
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class SecurityControllerTest extends WebTestCase
 {
+    private KernelBrowser $client;
+
     public function setUp(): void
     {
         $this->client = static::createClient();
     }
 
-    public function testIndex()
+    public function testIndex(): void
     {
         $this->client->request(Request::METHOD_GET, '/');
 
@@ -24,14 +28,14 @@ class SecurityControllerTest extends WebTestCase
         $this->assertStringContainsString('Se connecter', $crawler->filter('form .btn')->html());
     }
 
-    public function testLoginCheck()
+    public function testLoginCheck(): void
     {
         $this->client->request(Request::METHOD_GET, '/login_check');
 
         $this->assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testLogout()
+    public function testLogout(): void
     {
         $this->client->request(Request::METHOD_GET, '/logout');
 
@@ -42,10 +46,12 @@ class SecurityControllerTest extends WebTestCase
         $this->assertStringContainsString('Se connecter', $crawler->filter('form .btn')->html());
     }
 
-    public function testAccessDeniedRedirect()
+    public function testAccessDeniedRedirect(): void
     {
-        $user = static::getContainer()
-            ->get('doctrine.orm.default_entity_manager')
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = static::getContainer()->get('doctrine.orm.default_entity_manager');
+
+        $user = $entityManager
             ->getRepository(User::class)
             ->findOneBy(['username' => 'random']);
 

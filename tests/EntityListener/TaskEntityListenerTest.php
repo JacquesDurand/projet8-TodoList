@@ -26,12 +26,13 @@ class TaskEntityListenerTest extends KernelTestCase
         parent::tearDown();
     }
 
-    public function testPrePersist()
+    public function testPrePersist(): void
     {
         $task = new Task();
         $task->setContent('test');
         $task->setTitle('test');
 
+        /** @var EntityManagerInterface $entityManager */
         $entityManager = static::getContainer()->get('doctrine.orm.default_entity_manager');
 
         $entityManager->persist($task);
@@ -46,12 +47,13 @@ class TaskEntityListenerTest extends KernelTestCase
         $this->assertEquals(User::ANONYMOUS_USERNAME, $task->getUser()->getUsername());
     }
 
-    public function testPrePersistWithoutAnon()
+    public function testPrePersistWithoutAnon(): void
     {
         $task = new Task();
         $task->setContent('test');
         $task->setTitle('test');
 
+        /** @var EntityManagerInterface $entityManager */
         $entityManager = static::getContainer()->get('doctrine.orm.default_entity_manager');
 
         $anon = $entityManager
