@@ -54,7 +54,6 @@ some cases to test !
 To execute your tests with a coverage report:
 
 ```shell
-mkdir "coverage"
 make phpunit-coverage
 ```
 

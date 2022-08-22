@@ -3,18 +3,22 @@
 namespace Tests\Controller;
 
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 abstract class AuthenticatedWebTestCase extends WebTestCase
 {
     protected function createAuthenticatedClientForAnotherUser(KernelBrowser $client): KernelBrowser
     {
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = static::getContainer()->get('doctrine.orm.default_entity_manager');
+
         /** @var User $user */
-        $user = static::getContainer()
-            ->get('doctrine.orm.default_entity_manager')
+        $user = $entityManager
             ->getRepository(User::class)
             ->findOneBy(['username' => 'admin2'])
         ;
@@ -26,9 +30,11 @@ abstract class AuthenticatedWebTestCase extends WebTestCase
 
     protected function createAuthenticatedClient(KernelBrowser $client): KernelBrowser
     {
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = static::getContainer()->get('doctrine.orm.default_entity_manager');
+
         /** @var User $user */
-        $user = static::getContainer()
-            ->get('doctrine.orm.default_entity_manager')
+        $user = $entityManager
             ->getRepository(User::class)
             ->findOneBy(['username' => 'admin'])
             ;
@@ -38,9 +44,12 @@ abstract class AuthenticatedWebTestCase extends WebTestCase
         return self::createAuthentication($client, $user, $roles);
     }
 
+    /**
+     * @param array<string>|null $roles
+     */
     private static function createAuthentication(KernelBrowser $client, User $user, array $roles = null): KernelBrowser
     {
-        // Read below regarding config_test.yml!
+        /** @var Session $session */
         $session = static::getContainer()->get('session');
 
         // Authenticate

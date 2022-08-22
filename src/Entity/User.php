@@ -22,13 +22,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=25, unique=true)
      * @Assert\NotBlank(message="Vous devez saisir un nom d'utilisateur.")
      */
-    private ?string $username = null;
+    private string $username = '';
 
     /**
      * @ORM\Column(type="string", length=64)
@@ -44,10 +44,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="json")
+     *
+     * @var array<string>
      */
     private array $roles = [];
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -57,7 +59,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->username;
     }
 
-    public function setUsername(?string $username)
+    public function setUsername(string $username): void
     {
         $this->username = $username;
     }
@@ -72,7 +74,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(?string $password)
+    public function setPassword(?string $password): void
     {
         $this->password = $password;
     }
@@ -82,16 +84,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
-    public function setEmail($email)
+    public function setEmail(?string $email): void
     {
         $this->email = $email;
     }
 
+    /**
+     * @param array<string> $roles
+     */
     public function setRoles(array $roles): void
     {
         $this->roles = $roles;
     }
 
+    /**
+     * @return array<string>
+     */
     public function getRoles(): array
     {
         $roles = $this->roles;
@@ -101,7 +109,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 

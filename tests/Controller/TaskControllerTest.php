@@ -30,7 +30,7 @@ class TaskControllerTest extends WebTestCase
         parent::tearDown();
     }
 
-    public function testTaskListNotLoggedIn()
+    public function testTaskListNotLoggedIn(): void
     {
         $client = static::createClient();
         $client->request(Request::METHOD_GET, '/tasks');
@@ -41,7 +41,7 @@ class TaskControllerTest extends WebTestCase
         $this->assertStringContainsString('Se connecter', $crawler->filter('form .btn')->html());
     }
 
-    public function testTaskListLoggedIn()
+    public function testTaskListLoggedIn(): void
     {
         $client = static::createClient();
 
@@ -53,7 +53,7 @@ class TaskControllerTest extends WebTestCase
         $this->assertStringContainsString('Créer une tâche', $crawler->filter('.btn.btn-info.pull-right')->text());
     }
 
-    public function testGetTaskCreate()
+    public function testGetTaskCreate(): void
     {
         $client = static::createClient();
 
@@ -65,7 +65,7 @@ class TaskControllerTest extends WebTestCase
         $this->assertStringContainsString('Ajouter', $crawler->filter('.btn.btn-success.pull-right')->text());
     }
 
-    public function testCreateTask()
+    public function testCreateTask(): void
     {
         $client = static::createClient();
 
@@ -75,9 +75,11 @@ class TaskControllerTest extends WebTestCase
 
         $responseCrawler = $client->followRedirect();
 
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = static::getContainer()->get('doctrine.orm.default_entity_manager');
+
         /** @var ?Task $task */
-        $task = static::getContainer()
-            ->get('doctrine.orm.default_entity_manager')
+        $task = $entityManager
             ->getRepository(Task::class)
             ->findOneBy(
                 ['title' => 'new Task']
@@ -91,7 +93,7 @@ class TaskControllerTest extends WebTestCase
         $this->assertEquals('admin', $task->getUser()->getUsername());
     }
 
-    public function testEditTask()
+    public function testEditTask(): void
     {
         $client = static::createClient();
 
@@ -130,7 +132,7 @@ class TaskControllerTest extends WebTestCase
         $this->assertNotNull($editedTask);
     }
 
-    public function testToggleTask()
+    public function testToggleTask(): void
     {
         $client = static::createClient();
 
@@ -168,7 +170,7 @@ class TaskControllerTest extends WebTestCase
         $this->assertTrue($toggledTask->isDone());
     }
 
-    public function testDeleteTask()
+    public function testDeleteTask(): void
     {
         $client = static::createClient();
 
@@ -205,7 +207,7 @@ class TaskControllerTest extends WebTestCase
         $this->assertNull($deletedTask);
     }
 
-    public function testAnotherUserCannotDeleteTask()
+    public function testAnotherUserCannotDeleteTask(): void
     {
         $client = static::createClient();
 
@@ -272,8 +274,10 @@ class TaskControllerTest extends WebTestCase
 
     public function loginFirstUser(KernelBrowser $client): void
     {
-        $user = static::getContainer()
-            ->get('doctrine.orm.default_entity_manager')
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = static::getContainer()->get('doctrine.orm.default_entity_manager');
+
+        $user = $entityManager
             ->getRepository(User::class)
             ->findOneBy(['username' => 'admin']);
 
@@ -282,8 +286,10 @@ class TaskControllerTest extends WebTestCase
 
     public function loginSecondUser(KernelBrowser $client): void
     {
-        $secondUser = static::getContainer()
-            ->get('doctrine.orm.default_entity_manager')
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = static::getContainer()->get('doctrine.orm.default_entity_manager');
+
+        $secondUser = $entityManager
             ->getRepository(User::class)
             ->findOneBy(['username' => 'admin2']);
 

@@ -42,6 +42,7 @@ class InsertAnonymousUserCommandTest extends KernelTestCase
 
     public function testExecuteWithoutAnon(): void
     {
+        /** @var EntityManagerInterface $entityManager */
         $entityManager = static::getContainer()->get('doctrine.orm.default_entity_manager');
 
         $anon = $entityManager

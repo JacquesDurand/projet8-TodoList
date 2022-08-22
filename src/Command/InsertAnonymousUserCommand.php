@@ -20,7 +20,7 @@ class InsertAnonymousUserCommand extends Command
         parent::__construct($name);
     }
 
-    public function configure()
+    public function configure(): void
     {
         $this->setName('app:migrate:anon')
             ->setDescription('Adds an anonymous User to the DB for anonymous tasks')
